@@ -15,7 +15,7 @@ namespace CFDDns
         private static readonly string cfApiEmail = Environment.GetEnvironmentVariable("CF_API_EMAIL");
         private static readonly string cfDnsRecordId = Environment.GetEnvironmentVariable("CF_DNS_RECORD_ID");
         private static readonly string cfDnsZoneId = Environment.GetEnvironmentVariable("CF_DNS_ZONE_ID");
-        private static readonly string cfDnsRecordCName = Environment.GetEnvironmentVariable("CF_DNS_CNAME");
+        private static readonly string cfDnsRecordName = Environment.GetEnvironmentVariable("CF_DNS_NAME");
         private static readonly string cfApiJsonInput = "{  \"comment\": \"Domain verification record\",  \"name\": \"CF_DNS_RECORD_VAL\",  \"proxied\": false,  \"settings\": {},  \"tags\": [],  \"ttl\": 3600,  \"content\": \"CF_DNS_RECORD_IP\",  \"type\": \"A\"}";
 
         private static string targetUrl = null;
@@ -31,9 +31,9 @@ namespace CFDDns
             Console.WriteLine(string.Concat("Cloudflare API Email (CF_API_EMAIL): ", cfApiEmail != null ? "PRESENT" : "NOT PRESENT"));
             Console.WriteLine(string.Concat("Cloudflare DNS Record ID (CF_DNS_RECORD_ID): ", cfDnsRecordId != null ? "PRESENT" : "NOT PRESENT"));
             Console.WriteLine(string.Concat("Cloudflare DNS Zone ID (CF_DNS_ZONE_ID): ", cfDnsZoneId != null ? "PRESENT" : "NOT PRESENT"));
-            Console.WriteLine(string.Concat("Cloudflare DNS CNAME (CF_DNS_CNAME): ", cfDnsRecordCName != null ? "PRESENT" : "NOT PRESENT"));
+            Console.WriteLine(string.Concat("Cloudflare DNS NAME (CF_DNS_NAME): ", cfDnsRecordName != null ? "PRESENT" : "NOT PRESENT"));
 
-            if (cfApiKey != null && cfApiEmail != null && cfDnsRecordId != null && cfDnsZoneId != null && cfDnsRecordCName != null)
+            if (cfApiKey != null && cfApiEmail != null && cfDnsRecordId != null && cfDnsZoneId != null && cfDnsRecordName != null)
             {
                 targetUrl = string.Format("https://api.cloudflare.com/client/v4/zones/{0}/dns_records/{1}", cfDnsZoneId, cfDnsRecordId);
 
@@ -74,7 +74,7 @@ namespace CFDDns
                             "Authorization", string.Concat("Bearer ", cfApiKey)
                         }
                     },
-                    Content = new StringContent(cfApiJsonInput.Replace("CF_DNS_RECORD_VAL", cfDnsRecordCName).Replace("CF_DNS_RECORD_IP", currentIp))
+                    Content = new StringContent(cfApiJsonInput.Replace("CF_DNS_RECORD_VAL", cfDnsRecordName).Replace("CF_DNS_RECORD_IP", currentIp))
                     {
                         Headers =
                         {
